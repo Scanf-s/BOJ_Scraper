@@ -17,10 +17,7 @@ class DynamoDBConnector:
         self.user_table = user_table
         self.scrap_data_table = scrap_data_table
 
-
-async def lambda_handler(event, context):
-    logger.info("Start lambda function")
-
+async def main():
     session = aioboto3.Session()
     async with session.resource(
             service_name="dynamodb",
@@ -47,6 +44,10 @@ async def lambda_handler(event, context):
             status_code=200,
             body=f"Successfully processed {len(results)} submissions"
         ).to_dict()
+
+def lambda_handler(event, context):
+    logger.info("Start lambda function")
+    return asyncio.run(main())
 
 
 if __name__ == "__main__":
