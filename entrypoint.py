@@ -21,9 +21,7 @@ async def main():
     session = aioboto3.Session()
     async with session.resource(
             service_name="dynamodb",
-            region_name=os.getenv("AWS_REGION_NAME"),
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("AWS_REGION_NAME")
     ) as dynamodb_resource:
         user_table = await dynamodb_resource.Table(os.getenv("USER_TABLE_NAME"))
         scrap_data_table = await dynamodb_resource.Table(os.getenv("SCRAP_DATA_TABLE_NAME"))
@@ -52,4 +50,5 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     dotenv.load_dotenv(".env")
-    asyncio.run(lambda_handler(None, None))
+    response = lambda_handler(None, None)
+    print(response)
